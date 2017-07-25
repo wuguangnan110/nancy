@@ -1,6 +1,7 @@
 package com.example.wifilisttest;
 
 import java.util.ArrayList;  
+import android.text.TextUtils;
 import java.util.HashMap;  
 import java.util.List;  
 import java.util.Map;  
@@ -26,7 +27,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;  
 import android.widget.TextView;  
 import android.widget.Toast;  
-  
+import android.widget.EditText;
 /** 
  * @描述 在Fragment中要使用ListView，就要用ListFragment 
  * */  
@@ -45,8 +46,14 @@ public class Fragment1 extends ListFragment   {
 	private int[] data = new int[100];
 	int hasData = 0;
 	String[] list0=new String[20];
+	String[] listw=new String[10];
 	int time = 0;
 	boolean  startflag = false;
+	private Button        m_button;
+	private Button        m_button1;
+	private EditText    m_editText;
+	static  int inputtime= 0;
+	private Toast mToast;
 	Handler mHandler = new Handler()
 	{
 		@Override
@@ -57,11 +64,15 @@ public class Fragment1 extends ListFragment   {
 			{
 				if(startflag == true && ret != 0)   //检测到wifi设备,ret为个数
 				{
-					Toast.makeText(getActivity(), "there is "+ret+" wifi device found", Toast.LENGTH_LONG).show();
+					//Toast.makeText(getActivity(), "目前成功发现 "+ret+" 台wifi设备", Toast.LENGTH_LONG).show();
+					mToast.setText("目前成功发现 "+ret+" 台wifi设备");
+			        mToast.show();
 				}
 				if(ret == 0)  //检测为0个设备，开始报警
 				{
-					Toast.makeText(getActivity(), "no wifi device found , give an alarm!!!!!!!!", Toast.LENGTH_LONG).show();
+					//Toast.makeText(getActivity(), "no wifi device found , give an alarm!!!!!!!!", Toast.LENGTH_LONG).show();
+					mToast.setText("目前没有发现 任何wifi设备，请检查！！");
+			        mToast.show();
 					getActivity().startService(new Intent(getActivity(),Music.class));
 				}
 				else
@@ -107,11 +118,57 @@ public class Fragment1 extends ListFragment   {
         View view = inflater.inflate(R.layout.fragment1, container,false);  
         list = (ListView) view.findViewById(android.R.id.list);  
         Tv=(TextView)view.findViewById(R.id.tv);
-        Tv.setText("wifi自动检测v2.0");
+        Tv.setText("wifi自动检测v3.0");
         Log.i(TAG, "--------onCreateView");  
+        m_button = (Button)view.findViewById(R.id.editBtn1);
+        m_button1 = (Button)view.findViewById(R.id.editBtn2);
+        m_editText = (EditText)view.findViewById(R.id.editText);
+        m_editText.selectAll();
+        m_button.setOnClickListener(new ButtonListener());
+        m_button1.setOnClickListener(new ButtonListener1());
+        for( int i=0;i<10;i++){
+        	listw[i] = "no wifi";
+        }
+        mToast = Toast.makeText(getActivity(), "", Toast.LENGTH_SHORT);
         return view;  
     }  
-  
+    class ButtonListener implements OnClickListener {
+
+        public void onClick(View v) {
+        	
+            // TODO Auto-generated method stub
+            Log.v("EditText", m_editText.getText().toString());
+            if( !TextUtils.isEmpty(m_editText.getText()) && !m_editText.getText().toString().trim().isEmpty()) {
+	            listw[inputtime]=m_editText.getText().toString();
+//	            Toast.makeText(getActivity(), "wifi名称 "+listw[inputtime]+" 已加入检测", Toast.LENGTH_LONG).show();
+	            mToast.setText("wifi名称 "+listw[inputtime]+" 已加入检测");
+            	mToast.show();
+	            inputtime++;
+            }
+            else 
+            {
+            	mToast.setText("请输入正确wifi名称");
+            	mToast.show();
+//            	Toast.makeText(getActivity(), "请输入正确wifi名称", Toast.LENGTH_LONG).show();
+            }
+            if(inputtime > 9)
+            	inputtime = 0;
+        }
+    }
+    class ButtonListener1 implements OnClickListener {
+
+        public void onClick(View v) {
+            // TODO Auto-generated method stub
+            Log.v("EditText", m_editText.getText().toString());
+            inputtime = 0;
+            for( int i=0;i<10;i++){
+            	listw[i] = "no wifi";
+            }
+         //   Toast.makeText(getActivity(), "清除所有wifi记忆列表", Toast.LENGTH_LONG).show();
+            mToast.setText("清除所有wifi记忆列表");
+        	mToast.show();
+        }
+    }
     @Override  
     public void onCreate(Bundle savedInstanceState) {  
        super.onCreate(savedInstanceState);  
@@ -203,7 +260,10 @@ public class Fragment1 extends ListFragment   {
           	ScanResult scanResult = listb.get(i);
           	listk[i]=scanResult.SSID;
           //	System.out.println(listk[i]+" ");
-          	if(listk[i].contains("AI-THINKER")||listk[i].contains("wugangnan") )  //这里添加想要检测的wifi名称
+          	if(listk[i].contains(listw[0])||listk[i].contains(listw[1])||listk[i].contains(listw[2])|| 
+          	   listk[i].contains(listw[3])||listk[i].contains(listw[4])||listk[i].contains(listw[5])||
+          	   listk[i].contains(listw[6])||listk[i].contains(listw[7])||listk[i].contains(listw[8])||
+          	   listk[i].contains(listw[9]))  //这里添加想要检测的wifi名称
           	{
           		ret++;
           //		System.out.println(listk[i]+"wugangnan");
@@ -227,7 +287,7 @@ public class Fragment1 extends ListFragment   {
     public void onActivityCreated(Bundle savedInstanceState) {  
         super.onActivityCreated(savedInstanceState);  
 		final Button button = (Button) getActivity().findViewById(R.id.button);
-		final TextView textView = (TextView) getActivity().findViewById(R.id.textview1);
+		//final TextView textView = (TextView) getActivity().findViewById(R.id.textview1);
 		getActivity().stopService(new Intent(getActivity(),Music.class));
 		button.setOnClickListener(new OnClickListener() {
 			@Override
@@ -238,14 +298,18 @@ public class Fragment1 extends ListFragment   {
 				{
 					startflag = false;
 					button.setText("start scan wifi");
-					Toast.makeText(getActivity(), "停止扫描wifi", Toast.LENGTH_LONG).show();
+					//Toast.makeText(getActivity(), "停止扫描wifi", Toast.LENGTH_LONG).show();
+					mToast.setText("停止扫描wifi");
+			        mToast.show();
 					getActivity().stopService(new Intent(getActivity(),Music.class));
 				}
 				else	//stop scan wifi
 				{
 					startflag = true;
 					button.setText("stop scan wifi");
-					Toast.makeText(getActivity(), "现在开始扫描wifi", Toast.LENGTH_LONG).show();
+					//Toast.makeText(getActivity(), "现在开始扫描wifi", Toast.LENGTH_LONG).show();
+					mToast.setText("现在开始扫描wifi");
+			        mToast.show();
 				}
 				
 			 	new Thread()   //建立扫描线程，40ms更新一次wifi列表，将刷新任务交于handler处理
@@ -259,7 +323,7 @@ public class Fragment1 extends ListFragment   {
 							status = doWork();
 							ret = scanwifi();
 							if (ret!=0){
-								System.out.println("there is "+ret+"  wifi found suceessful!");
+								System.out.println("目前扫描发现 "+ret+"  台wifi设备!");
 							}
 							value++;
 							// 发送消息
