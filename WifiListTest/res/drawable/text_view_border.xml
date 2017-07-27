@@ -1,9 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#80858175" />
-    <stroke android:width="1dip" android:color="#aea594" />
-      <corners android:topLeftRadius="2dp"    
-        android:topRightRadius="2dp"     
-        android:bottomRightRadius="2dp"    
-        android:bottomLeftRadius="2dp"/>
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:useLevel="false"
+    >
+    <solid android:color="@null"/>
+    <padding android:left="1dip"
+        android:right="1dip"
+        android:bottom="1dip"/>
+
+    <stroke android:width="1dip"
+        android:color="#F0F8FF"
+        />
+    <!--边框宽度-->
+    <size android:width="15dip"
+        android:height="15dip"
+        />
+    <!--边框-->
 </shape>

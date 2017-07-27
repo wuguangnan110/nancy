@@ -1,50 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical" >
 
     <TextView
         android:id="@+id/tv"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center" />
+        android:layout_width="wrap_content"
+        android:layout_height="0dip"
+        android:layout_weight="1" />
 
     <ListView
         android:id="@id/android:list"
-        android:layout_width="wrap_content"
-        android:layout_height="374dp"
-        android:layout_weight="582.18" 
-         android:cacheColorHint="#00000000"
-        android:divider="#ffffff"
-        android:dividerHeight="3dp">
-
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="6"
+        android:cacheColorHint="#00000000"
+        android:divider="#87CEEB"
+        android:dividerHeight="1dp" >
     </ListView>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="124dp"
-        android:background="@drawable/selector_btn_bk"
-        android:padding="5dp"
-        android:text="start scan wifi"
-        android:textSize="35sp" />
-
     <EditText
-        android:id="@+id/editText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
         android:text="" />
 
     <Button
         android:id="@+id/editBtn1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_marginTop="5dip"
+        android:layout_weight="1"
+        android:background="@drawable/selector_btn_bk"
+        android:gravity="center"
         android:text="添加wifi设备" />
-        <Button
+
+    <Button
         android:id="@+id/editBtn2"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_marginTop="5dip"
+        android:layout_weight="1"
+        android:background="@drawable/selector_btn_bk"
+        android:gravity="center"
         android:text="清除wifi记忆列表" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_marginTop="5dip"
+        android:layout_weight="1.5"
+        android:background="@drawable/selector_btn_bk"
+        android:gravity="center"
+        android:text="开始扫描" />
+
 </LinearLayout>
